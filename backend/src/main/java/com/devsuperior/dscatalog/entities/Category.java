@@ -2,8 +2,17 @@ package com.devsuperior.dscatalog.entities;
 
 import java.io.Serializable;
 import java.util.Objects;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Table;
 
+@Entity
+@Table(name = "tb_category")
 public class Category implements Serializable {
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY) // incrementar ID no banco de dados
 	private Long id;
 	private String name;
 	
