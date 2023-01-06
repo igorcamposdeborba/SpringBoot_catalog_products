@@ -11,7 +11,7 @@ import javax.persistence.Table;
 @Entity
 @Table(name = "tb_category")
 public class Category implements Serializable {
-	@Id
+	@Id // identifica que este atributo é um id
 	@GeneratedValue(strategy = GenerationType.IDENTITY) // incrementar ID no banco de dados
 	private Long id;
 	private String name;
