@@ -16,6 +16,6 @@ SELECT * FROM categories;
 
 ALTER TABLE categories CHANGE id id INT AUTO_INCREMENT PRIMARY KEY NOT NULL;
 
-INSERT INTO categories (name) VALUES("Teste 1");
-INSERT INTO categories (name) VALUES("Teste 2");
-INSERT INTO categories (name) VALUES(null);
+INSERT INTO categories (name, created_At) VALUES("Teste 1", NOW());
+INSERT INTO categories (name, created_At) VALUES("Teste 2", NOW());
+INSERT INTO categories (name, created_At) VALUES(null, NOW());
