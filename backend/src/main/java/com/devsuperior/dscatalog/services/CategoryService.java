@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+import javax.persistence.EntityNotFoundException;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -35,7 +37,7 @@ public class CategoryService {
 	@Transactional(readOnly = true)
 	public CategoryDTO findById(Long id) {
 		Optional<Category> obj = repository.findById(id);
-		Category entity = obj.orElseThrow(() -> new EntityNotFoundException("Entity ou registro não encontrado"));
+		Category entity = obj.orElseThrow(() -> new ResourceNotFoundException("Entity ou registro não encontrado"));
 		return new CategoryDTO(entity);
 	}
 	
@@ -47,6 +49,19 @@ public class CategoryService {
 		entity = repository.save(entity);
 		return new CategoryDTO(entity);
 		
+	}
+	
+	@Transactional
+	public CategoryDTO update(Long id, CategoryDTO dto) {
+		try {
+			Category entity = repository.getOne(id); // getOne instancia um objeto temporario e evita de acessar o banco
+			entity.setName(dto.getName());
+			entity = repository.save(entity);
+			
+			return new CategoryDTO(entity);
+		} catch (EntityNotFoundException e) {
+			throw new ResourceNotFoundException("Id não encontrado " + id);
+		}
 	}
 	
 	
