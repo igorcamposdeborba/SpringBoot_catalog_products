@@ -9,6 +9,9 @@ import javax.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.EmptyResultDataAccessException;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -25,16 +28,17 @@ public class CategoryService {
 	
 	
 	@Transactional(readOnly = true) // transação sempre executa esta operação no banco de dados. ReadOnly true não trava o banco (boa prática em operações de leitura)
-	public List<CategoryDTO> findAll() {
-		List<Category> list = repository.findAll(); // buscar lista de categorias
+	public Page<CategoryDTO> findAllPaged(PageRequest pageRequest) {
+		Page<Category> list = repository.findAll(pageRequest); // buscar lista de categorias
 		
 		// converter por meio do DTO a lista de categorias
 		List<CategoryDTO> listDto = new ArrayList<>(); 
 		for (Category cat : list) {
 			listDto.add(new CategoryDTO(cat));
 		}
-			
-		return listDto;
+		Page<CategoryDTO> page = new PageImpl<>(listDto); // converter a List em stream Page
+		
+		return page;
 	}
 	
 	@Transactional(readOnly = true)
