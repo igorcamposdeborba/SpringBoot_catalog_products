@@ -84,9 +84,5 @@ public class ProductDTO implements Serializable {
 	public void setImgUrl(String imgUrl) {
 		this.imgUrl = imgUrl;
 	}
-	
-	public Set<Category> getCategories(){
-		return categories;
-	}
 
 }
