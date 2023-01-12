@@ -43,6 +43,7 @@ public class ProductResource {
 		return ResponseEntity.ok().body(list); // método ok() aceita uma requisição 200 do http (de sucesso)
 	}
 	
+	
 	@GetMapping(value = "/{id}")
 	public ResponseEntity<ProductDTO> findById (@PathVariable Long id) {
 		ProductDTO dto = service.findById(id);
