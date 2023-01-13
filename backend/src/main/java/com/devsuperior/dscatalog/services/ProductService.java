@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
@@ -34,7 +35,7 @@ public class ProductService {
 		// converter por meio do DTO a lista de categorias
 		List<ProductDTO> listDto = new ArrayList<>(); 
 		for (Product cat : list) {
-			listDto.add(new ProductDTO(cat));
+			listDto.add(new ProductDTO(cat, cat.getCategories()));
 		}
 		Page<ProductDTO> page = new PageImpl<>(listDto); // converter a List em stream Page
 		

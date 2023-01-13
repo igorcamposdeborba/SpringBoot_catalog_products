@@ -53,6 +53,7 @@ public class ProductDTO implements Serializable {
 		}
 	}
 	
+	
 	public Long getId() {
 		return id;
 	}
@@ -67,6 +68,9 @@ public class ProductDTO implements Serializable {
 	}
 	public String getImgUrl() {
 		return imgUrl;
+	}
+	public List<CategoryDTO> getCategories() {
+		return categories;
 	}
 	
 	public void setId(Long id) {
@@ -84,5 +88,7 @@ public class ProductDTO implements Serializable {
 	public void setImgUrl(String imgUrl) {
 		this.imgUrl = imgUrl;
 	}
+
+
 
 }
