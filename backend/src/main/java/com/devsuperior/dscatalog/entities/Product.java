@@ -66,6 +66,9 @@ public class Product implements Serializable {
 	public String getImgUrl() {
 		return imgUrl;
 	}
+	public Instant getDate() {
+		return date;
+	}
 	
 	public void setId(Long id) {
 		this.id = id;
@@ -81,6 +84,9 @@ public class Product implements Serializable {
 	}
 	public void setImgUrl(String imgUrl) {
 		this.imgUrl = imgUrl;
+	}
+	public void setDate(Instant date) {
+		this.date = date;
 	}
 	
 	public Set<Category> getCategories(){
