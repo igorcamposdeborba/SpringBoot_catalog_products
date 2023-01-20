@@ -47,6 +47,16 @@ public class ProductServiceTests {
 		Mockito.verify(repository, Mockito.times(1)).deleteById(existingId); // verifica se realmente o método do mockito (para dados mocados) foi usado. times() define o número de vezes que o método deveria chamar o mockito
 	}
 	
+	@Test
+	public void deleteShouldThrowResourceNotFoundExceptionWhenIdDoesNotExists() {
+		
+		Assertions.assertThrows(ResourceNotFoundException.class, () -> {
+			service.delete(nonExistingId);
+		});
+		
+		Mockito.verify(repository, Mockito.times(1)).deleteById(nonExistingId);
+	}
+	
 	
 	
 }
