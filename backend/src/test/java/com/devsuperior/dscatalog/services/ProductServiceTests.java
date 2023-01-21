@@ -17,7 +17,6 @@ import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Sort.Direction;
 import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
@@ -62,6 +61,7 @@ public class ProductServiceTests {
 		Mockito.when(repository.save(ArgumentMatchers.any())).thenReturn(product);
 		Mockito.when(repository.findById(existingId)).thenReturn(Optional.of(product));
 		Mockito.when(repository.findById(nonExistingId)).thenReturn(Optional.empty());
+		
 	}
 	
 	// Caso de uso válido para deletar id que existe
@@ -97,8 +97,9 @@ public class ProductServiceTests {
 		Mockito.verify(repository, Mockito.times(1)).deleteById(dependentId);
 	}
 	
+	// Testar find all paginado com PageRequest ao invés de Pageable
 	@Test
-	public void findAllPagedShouldREturnPage() {
+	public void findAllPagedShouldReturnPage() {
 		PageRequest pageRequest = PageRequest.of(0, 10);
 		
 		Page<ProductDTO> result = service.findAllPaged(pageRequest);
@@ -106,6 +107,19 @@ public class ProductServiceTests {
 		Assertions.assertNotNull(result);
 		Mockito.verify(repository, Mockito.times(1)).findAll(pageRequest);
 	}
+	
+	
+	// Testar find by Id
+	@Test
+	public void findByIdShouldReturnProductDTOWhenIdExists() {
+		
+		ProductDTO result = service.findById(existingId);
+		
+		Assertions.assertNotNull(result);
+		Mockito.verify(repository, Mockito.times(1)).findById(existingId);
+	}
+	
+	
 	
 	
 }
