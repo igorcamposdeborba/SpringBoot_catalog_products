@@ -119,6 +119,16 @@ public class ProductServiceTests {
 		Mockito.verify(repository, Mockito.times(1)).findById(existingId);
 	}
 	
+	// Exception quando o id não existir no banco de dados
+	@Test
+	public void findByIdShouldResourceNotFoundExceptionWhenIdDoesNotExists() {
+		
+		Assertions.assertThrows(ResourceNotFoundException.class, () -> {
+			service.findById(nonExistingId);
+		});
+		
+		Mockito.verify(repository, Mockito.times(1)).findById(nonExistingId);
+	}
 	
 	
 	
