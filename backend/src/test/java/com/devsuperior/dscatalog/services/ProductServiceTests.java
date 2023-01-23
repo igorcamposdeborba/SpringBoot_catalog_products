@@ -52,6 +52,7 @@ public class ProductServiceTests {
 	private Category category;
 	private ProductDTO productDTO;
 	
+	// Simulação dos comportamentos
 	@BeforeEach
 	public void setUp() throws Exception {
 		existingId = 1L;
