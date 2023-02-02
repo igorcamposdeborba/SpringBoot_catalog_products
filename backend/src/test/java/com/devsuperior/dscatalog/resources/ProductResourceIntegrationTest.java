@@ -60,6 +60,7 @@ public class ProductResourceIntegrationTest {
 		
 	}
 	
+	@Test
 	public void updateShouldReturnProductDTOWhenExistsId() throws Exception {
 		ProductDTO productDTO = Factory.createProductDto();
 		
@@ -80,12 +81,21 @@ public class ProductResourceIntegrationTest {
 		result.andExpect(jsonPath("$.name").value(expectedName));
 		result.andExpect(jsonPath("$.description").value(expectedDescription));
 		result.andExpect(jsonPath("$.price").value(expectedPrice));
-		
-		
-		
 	}
 	
-	
+	@Test
+	public void updateShouldThrowEntityNotFoundExceptionWhenDoesNotExistId() throws Exception {
+		ProductDTO productDTO = Factory.createProductDto();
+		
+		String jsonBody = objectMapper.writeValueAsString(productDTO); // converter objeto java em String para o JSON
+		
+		ResultActions result = mockMvc.perform(put("/products/{id}", nonExistingId)
+												.content(jsonBody)
+												.contentType(MediaType.APPLICATION_JSON)
+												.accept(MediaType.APPLICATION_JSON));
+		
+		result.andExpect(status().isNotFound());
+	}
 	
 	
 	
