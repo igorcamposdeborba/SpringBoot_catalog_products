@@ -5,7 +5,6 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-
 import com.devsuperior.dscatalog.repositories.ProductRepository;
 
 @SpringBootTest // Carrega o contexto da aplicação (teste de integração)
@@ -35,4 +34,11 @@ public class ProductServiceIntegrationTest {
 		Assertions.assertEquals(countTotalProducts - 1, repository.count());
 	}
 	
+	@Test
+	public void deleteShouldThrowResourceNotFoundExceptionWhenIdDoesNotExist() {
+		Assertions.assertThrows(ResourceNotFoundException.class, () -> {
+			service.delete(nonExistingId);
+		});
+		
+	}
 }
