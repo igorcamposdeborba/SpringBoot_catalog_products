@@ -34,7 +34,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 public class ProductResourceTests {
 	
 	@Autowired
-	private MockMvc mockMvc;
+	private MockMvc mockMvc; // permite que eu faça requisições
 	
 	@MockBean
 	private ProductService service;

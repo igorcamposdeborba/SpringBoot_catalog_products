@@ -33,7 +33,7 @@ public class ProductServiceIntegrationTest {
 		existingid = 1L;
 		nonExistingId = 1000L;
 		countTotalProducts = 25L;
-		}
+	}
 	
 	@Test
 	public void deleteShouldDeleteResourceWhenIdExists() {
