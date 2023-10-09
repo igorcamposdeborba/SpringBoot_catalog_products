@@ -52,7 +52,7 @@ public class ProductDTO implements Serializable {
 		this(entity); // chamar construtor de cima
 		
 		for (Category i : categories) {
-			this.categories.add(new CategoryDTO(i));
+			this.categories.add(new CategoryDTO(i)); // adicionar categorias no DTO
 		}
 	}
 	

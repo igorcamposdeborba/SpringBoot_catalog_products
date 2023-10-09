@@ -1,10 +1,13 @@
 package com.devsuperior.dscatalog.entities;
 
 import java.io.Serializable;
+import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -22,15 +25,16 @@ public class User implements Serializable {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 	private String firstName;
-	private String last_name;
+	private String lastName;
+	@Column(unique = true)
 	private String email;
-	private String password;
+	private String password; 
 	
-	@ManyToMany // relacionamento muitos para muitos cria tabela intermediária
+	@ManyToMany (fetch = FetchType.EAGER) // relacionamento muitos para muitos cria tabela intermediária. O Eager puxa outra tabela junto na busca do banco de dados, que aqui é o Role dos users
 	@JoinTable(name = "tb_user_role", 					           // nome da tabela intermediária
 			   joinColumns = @JoinColumn(name = "user_id"), 	   // foreign key desta classe/tabela
 			   inverseJoinColumns = @JoinColumn(name = "role_id")) // foreign key da outra classe 
-	private Set<Role> roles;
+	private Set<Role> roles = new HashSet<>();
 	
 	public User() {}
 
@@ -73,8 +77,15 @@ public class User implements Serializable {
 	public void setPassword(String password) {
 		this.password = password;
 	}
+	public String getLastName() {
+		return lastName;
+	}
+
+	public void setLastName(String lastName) {
+		this.lastName = lastName;
+	}
 	
-	public Set<Role> getRole(){
+	public Set<Role> getRoles(){
 		return roles;
 	}
 
