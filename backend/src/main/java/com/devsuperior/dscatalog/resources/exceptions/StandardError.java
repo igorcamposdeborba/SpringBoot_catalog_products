@@ -2,6 +2,10 @@ package com.devsuperior.dscatalog.resources.exceptions;
 
 import java.io.Serializable;
 import java.time.Instant;
+import java.util.ArrayList;
+import java.util.List;
+
+import org.springframework.validation.FieldError;
 
 public class StandardError implements Serializable{
 	private static final long serialVersionUID = 1L;

@@ -11,6 +11,12 @@ import javax.persistence.Column;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.PastOrPresent;
+import javax.validation.constraints.Positive;
+import javax.validation.constraints.Size;
+
+import org.springframework.beans.factory.annotation.Required;
 
 import com.devsuperior.dscatalog.entities.Category;
 import com.devsuperior.dscatalog.entities.Product;
@@ -20,11 +26,15 @@ public class ProductDTO implements Serializable {
 	private static final long serialVersionUID = 1L;
 	
 	private Long id;
+	@NotBlank(message = "Nome é obrigatório")
+	@Size(min = 2, max = 128, message = "O nome deve ter entre 2 e 128 caracteres")
 	private String name;
 	private String description;
+	@Positive(message = "O preço precisa ser positivo")
 	private Double price;
 	private String imgUrl;
-	
+
+	@PastOrPresent(message = "A data do produto não pode ser futura")
 	private Instant date;
 
 	private List<CategoryDTO> categories = new ArrayList<>();

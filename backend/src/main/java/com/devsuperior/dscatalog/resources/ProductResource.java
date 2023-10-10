@@ -2,6 +2,8 @@ package com.devsuperior.dscatalog.resources;
 
 import java.net.URI;
 
+import javax.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -45,15 +47,15 @@ public class ProductResource {
 	
 	
 	@GetMapping(value = "/{id}")
-	public ResponseEntity<ProductDTO> findById (@PathVariable Long id) {
+	public ResponseEntity<ProductDTO> findById (@PathVariable Long id) { // @PathVariable vincula o id do caminho da URL
 		ProductDTO dto = service.findById(id);
 		
 		return ResponseEntity.ok().body(dto); // método ok() aceita uma requisição 200 do http (de sucesso)
 	}
 	
 	@PostMapping
-	public ResponseEntity<ProductDTO> insert(@RequestBody ProductDTO dto){
-		dto = service.insert(dto);
+	public ResponseEntity<ProductDTO> insert(@Valid @RequestBody ProductDTO dto){ // @Valid ativa a validação dos atributos na classe DTO
+		dto = service.insert(dto);												  // @RequestBody indica que o json do dto vem no body da requisição
 		URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}")
 				.buildAndExpand(dto.getId()).toUri();
 		
@@ -61,7 +63,7 @@ public class ProductResource {
 	}
 	
 	@PutMapping(value = "{id}")
-	public ResponseEntity<ProductDTO> update(@PathVariable Long id, @RequestBody ProductDTO dto) {
+	public ResponseEntity<ProductDTO> update(@Valid @PathVariable Long id, @RequestBody ProductDTO dto) {
 		dto = service.update(id, dto);
 		URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}")
 				.buildAndExpand(dto.getId()).toUri();
