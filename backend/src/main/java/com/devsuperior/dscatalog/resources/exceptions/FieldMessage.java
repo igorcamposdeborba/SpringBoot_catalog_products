@@ -2,8 +2,6 @@ package com.devsuperior.dscatalog.resources.exceptions;
 
 import java.io.Serializable;
 
-import javax.validation.constraints.NotBlank;
-
 public class FieldMessage implements Serializable {
 	private static final long serialVersionUID = 1L;
 	
