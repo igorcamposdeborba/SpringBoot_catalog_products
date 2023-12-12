@@ -4,6 +4,7 @@ import java.time.Instant;
 import java.util.stream.Stream;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.validation.ConstraintViolationException;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -57,5 +58,22 @@ public class ResourceExceptionHandler {
 		}
 		
 		return ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY).body(err);
+	}
+	
+	@ExceptionHandler(ConstraintViolationException.class)
+	public ResponseEntity<ValidationError> emailDuplicated(MethodArgumentNotValidException e, HttpServletRequest request){
+		ValidationError err = new ValidationError();
+		err.setTimestamp(Instant.now());
+		err.setStatus(HttpStatus.UNPROCESSABLE_ENTITY.value());
+		err.setError("Validation exception");
+		err.setMessage(e.getMessage());
+		err.setPath(request.getRequestURI());
+		
+		// Adicionar cada erro com mensagem customizada pela annotation (que está no DTO)
+		for (FieldError fieldError : e.getFieldErrors()) { // somente este tipo de loop funciona. for normal e stream forEach não funcionam corretamente neste caso.
+			err.addErrorMessageCustomized(fieldError.getField(), fieldError.getDefaultMessage());
+		}
+				
+		return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(err);
 	}
 }

@@ -6,7 +6,8 @@ import java.util.Objects;
 import java.util.Optional;
 
 import javax.persistence.EntityNotFoundException;
-
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.EmptyResultDataAccessException;
@@ -14,6 +15,9 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -21,6 +25,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.devsuperior.dscatalog.dto.RoleDTO;
 import com.devsuperior.dscatalog.dto.UserDTO;
 import com.devsuperior.dscatalog.dto.UserInsertDTO;
+import com.devsuperior.dscatalog.dto.UserUpdateDTO;
 import com.devsuperior.dscatalog.entities.Role;
 import com.devsuperior.dscatalog.entities.User;
 import com.devsuperior.dscatalog.repositories.RoleRepository;
@@ -28,7 +33,8 @@ import com.devsuperior.dscatalog.repositories.UserRepository;
 import com.devsuperior.dscatalog.resources.exceptions.DatabaseException;
 
 @Service // annotation registra que essa classe faz parte do sistema automatizado do spring. Spring gerencia a injeção de dependência
-public class UserService {
+public class UserService implements UserDetailsService {
+	private static Logger logger = LoggerFactory.getLogger(UserService.class); // Log slf4j para esta classe
 	
 	@Autowired // permite injetar uma instância do UserRepository
 	private UserRepository repository;	
@@ -73,7 +79,7 @@ public class UserService {
 	}
 	
 	@Transactional
-	public UserDTO update(Long id, UserDTO dto) {
+	public UserDTO update(Long id, UserUpdateDTO dto) {
 		try {
 			User entity = repository.getOne(id); // getOne instancia um objeto temporario do JPA e evita de acessar o banco
 			copyDtoToEntity(dto, entity);
@@ -111,5 +117,15 @@ public class UserService {
 			entity.getRoles().add(role);
 		}
 	}
-	
+
+	@Override
+	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+		User user = repository.findByEmail(username);
+		if (Objects.isNull(user)) {
+			logger.error("User NOT found: " + username);
+			throw new UsernameNotFoundException("Email não encontrado");
+		}
+		logger.info("User found: " + username);
+		return user;
+	}
 }
