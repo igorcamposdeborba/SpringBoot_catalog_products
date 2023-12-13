@@ -33,7 +33,7 @@ import com.devsuperior.dscatalog.repositories.UserRepository;
 import com.devsuperior.dscatalog.resources.exceptions.DatabaseException;
 
 @Service // annotation registra que essa classe faz parte do sistema automatizado do spring. Spring gerencia a injeção de dependência
-public class UserService implements UserDetailsService {
+public class UserService implements UserDetailsService { // UserDetailService é do login do OAuth2
 	private static Logger logger = LoggerFactory.getLogger(UserService.class); // Log slf4j para esta classe
 	
 	@Autowired // permite injetar uma instância do UserRepository
@@ -119,7 +119,7 @@ public class UserService implements UserDetailsService {
 	}
 
 	@Override
-	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException { // Método do login do OAuth2
 		User user = repository.findByEmail(username);
 		if (Objects.isNull(user)) {
 			logger.error("User NOT found: " + username);
