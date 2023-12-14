@@ -19,7 +19,7 @@ import org.springframework.security.oauth2.provider.token.store.JwtTokenStore;
 import com.devsuperior.dscatalog.components.JwtTokenEnhancer;
 
 @Configuration
-@EnableAuthorizationServer // Esta classe representa o servidor de autorização do OAuth2
+@EnableAuthorizationServer // Esta classe representa o servidor de autenticação do OAuth2
 public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdapter {
 	
 	@Value("${security.oauth2.client.client-id}")
